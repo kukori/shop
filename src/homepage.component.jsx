@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './homepage.styles.scss'
+
 const HomePage = () => {
     return (
         <div className="homepage">
@@ -33,7 +35,7 @@ const HomePage = () => {
                         <h1 className="title">MAN</h1>
                         <span className="subtitle">SHOP NOW</span>
                     </div>
-                </div>            
+                </div>
             </div>
         </div>
     )
