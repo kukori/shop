@@ -1,26 +1,23 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
 import { auth, createUserProfileDocument } from '../../firebase/firebase.utils';
 
 import './sign-up.styles.scss';
 
-export default class SignUp extends Component {
-    constructor() {
-        super();
+const SignUp = () => {
 
-        this.state = {
-            displayName: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-        }
-    }
+    const [userData, setUserData] = useState({
+        displayName: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+    });
 
-    handleSubmit = async event => {
+    const { displayName, email, password, confirmPassword} = userData;
+
+    const handleSubmit = async event => {
         event.preventDefault();
-
-        const { displayName, email, password, confirmPassword} = this.state;
 
         if( password !== confirmPassword) {
             alert("passwords don't match!");
@@ -32,7 +29,7 @@ export default class SignUp extends Component {
 
             await createUserProfileDocument(user, {displayName});
 
-            this.setState({
+            setUserData({
                 displayName: '',
                 email: '',
                 password: '',
@@ -43,25 +40,25 @@ export default class SignUp extends Component {
         }
     }
 
-    handleChange = event => {
+    const handleChange = event => {
         const {value, name} = event.target;
 
-        this.setState({ [name]: value });
+        setUserData({...userData, [name]: value });
     }
 
-    render() {
-        return (
-            <div className="sign-up">
-                <h2 className='title'>I do not have a account</h2>
-                <span>Sign up with your email and password</span>
-                <form className="sign-up-form" onSubmit={this.handleSubmit}>
-                    <FormInput name="displayName" type="text" label="Display Name" value={this.state.displayName} handleChange={this.handleChange} required/>
-                    <FormInput name="email" type="email" label="Email" value={this.state.email} handleChange={this.handleChange} required/>
-                    <FormInput name="password" type="password" label="Password" value={this.state.password} handleChange={this.handleChange} required/>
-                    <FormInput name="confirmPassword" type="password" label="Confirm Password" value={this.state.confirmPassword} handleChange={this.handleChange} required/>
-                    <CustomButton type="submit">Sign up</CustomButton>
-                </form>
-            </div>
-        )
-    }
+    return (
+        <div className="sign-up">
+            <h2 className='title'>I do not have a account</h2>
+            <span>Sign up with your email and password</span>
+            <form className="sign-up-form" onSubmit={handleSubmit}>
+                <FormInput name="displayName" type="text" label="Display Name" value={displayName} handleChange={handleChange} required/>
+                <FormInput name="email" type="email" label="Email" value={email} handleChange={handleChange} required/>
+                <FormInput name="password" type="password" label="Password" value={password} handleChange={handleChange} required/>
+                <FormInput name="confirmPassword" type="password" label="Confirm Password" value={confirmPassword} handleChange={handleChange} required/>
+                <CustomButton type="submit">Sign up</CustomButton>
+            </form>
+        </div>
+    )
 }
+
+export default SignUp;
